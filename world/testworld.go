@@ -13,22 +13,26 @@ type Game struct {
 	options []*ebiten.DrawImageOptions
 }
 
+const (
+	WIDTH int = 320
+	HIGH  int = 240
+)
+
 func (g *Game) Update() error {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-		mouseX, mouseY := ebiten.CursorPosition()
-		fmt.Printf("%v %v\n", mouseX, mouseY)
-
-		// Создание изображения с красным пикселем в координатах mouseX, mouseY
-		redImage := ebiten.NewImage(1, 1)
-		redImage.Fill(color.RGBA{255, 0, 0, 255}) // Красный цвет
-
-		// Преобразование координат из окна в координаты изображения
-		opts := &ebiten.DrawImageOptions{}
-		opts.GeoM.Translate(float64(mouseX), float64(mouseY))
-
-		// Добавление изображения и его опций в соответствующие списки для отображения
-		g.images = append(g.images, redImage)
-		g.options = append(g.options, opts)
+		if len(g.images) == 0 {
+			mouseX, mouseY := ebiten.CursorPosition()
+			fmt.Printf("%v %v\n", mouseX, mouseY)
+			redImage := ebiten.NewImage(5, 5)
+			redImage.Fill(color.RGBA{255, 0, 0, 255}) // Красный цвет
+			opts := &ebiten.DrawImageOptions{}
+			opts.GeoM.Translate(float64(mouseX), float64(mouseY))
+			g.images = append(g.images, redImage)
+			g.options = append(g.options, opts)
+		}
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyW) {
+		fmt.Println(*g.images[0])
 	}
 	return nil
 }
@@ -41,7 +45,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
+	return WIDTH, HIGH
 }
 
 func main() {
