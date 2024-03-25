@@ -2,7 +2,7 @@ package units
 
 import "github.com/google/uuid"
 
-type unit struct {
+type Unit struct {
 	ID                  uuid.UUID
 	X                   float64
 	Y                   float64
